@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Sammy’s | Bespoke Cabinetry & Architectural Joinery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sammys-ivory': '#F4F1EB',
+                        'sammys-charcoal': '#1C1C1A',
+                        'sammys-taupe': '#B8ADA0',
+                        'sammys-stone': '#D8D0C5',
+                        'sammys-espresso': '#29231F',
+                        'sammys-brass': '#B49A6A',
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'luxury': '0.2em',
+                        'widest-xl': '0.3em',
+                    },
+                    screens: {
+                        'xs': '475px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1C1C1A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B49A6A;
+            border-radius: 3px;
+        }
+
+        /* Custom Desktop Cursor (Disabled on Touch Devices) */
+        @media (min-width: 1024px) {
+            body {
+                cursor: default;
+            }
+            .custom-cursor {
+                pointer-events: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 9999;
+                border-radius: 50%;
+                transition: transform 0.12s ease-out, width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border 0.3s ease;
+                transform: translate(-50%, -50%);
+            }
+            .cursor-dot {
+                width: 8px;
+                height: 8px;
+                background-color: #B49A6A;
+            }
+            .cursor-follower {
+                width: 42px;
+                height: 42px;
+                border: 1px solid rgba(180, 154, 106, 0.4);
+                transition: transform 0.2s ease-out;
+            }
+            .cursor-hover {
+                width: 72px !important;
+                height: 72px !important;
+                background-color: rgba(28, 28, 26, 0.88) !important;
+                border: 1px solid #B49A6A !important;
+                backdrop-filter: blur(4px);
+            }
+        }
+
+        /* Ken Burns Effect for Hero Images */
+        @keyframes kenburns {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.08); }
+        }
+        .animate-kenburns {
+            animation: kenburns 7s ease-out infinite alternate;
+        }
+
+        /* Slide Transition */
+        .hero-slide {
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        /* Hover Zoom Utilities */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Page Transition FX */
+        .page-content {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .page-content.is-transitioning {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* Hide Scrollbars horizontally for tabs on mobile */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Touch target minimum size for mobile accessibility */
+        .touch-target {
+            min-height: 44px;
+            min-width: 44px;
+        }
+    </style>
+</head>
+<body class="bg-sammys-ivory text-sammys-charcoal font-sans antialiased selection:bg-sammys-brass selection:text-white overflow-x-hidden">
+
+    <!-- Custom Cursor Elements (Desktop only) -->
+    <div id="cursor-dot" class="custom-cursor cursor-dot hidden lg:block"></div>
+    <div id="cursor-follower" class="custom-cursor cursor-follower hidden lg:block flex items-center justify-center">
+        <span id="cursor-text" class="text-[9px] uppercase tracking-widest text-sammys-brass opacity-0 font-medium pointer-events-none">View</span>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header id="mainNav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 lg:py-5 px-4 sm:px-8 lg:px-12 bg-sammys-charcoal/90 backdrop-blur-md border-b border-stone-800 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#home" onclick="navigateTo('home'); return false;" class="group flex items-center space-x-3 touch-target">
+                <span class="text-xl sm:text-2xl font-serif tracking-widest uppercase font-light text-sammys-brass group-hover:text-amber-200 transition-colors">SAMMY'S</span>
+                <span class="hidden sm:inline-block text-[9px] uppercase tracking-[0.25em] text-sammys-stone/70 border-l border-stone-700 pl-3">Bespoke Joinery</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-6 xl:space-x-8 text-xs font-medium uppercase tracking-[0.2em] text-sammys-stone">
+                <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-sammys-brass transition-colors py-1">Home</a>
+                <a href="#products" onclick="navigateTo('products'); return false;" class="hover:text-sammys-brass transition-colors py-1">Portfolio</a>
+                <a href="#haute-customize" onclick="navigateTo('haute-customize'); return false;" class="hover:text-sammys-brass transition-colors py-1">Haute Customize</a>
+                <a href="#video-showcase" onclick="navigateTo('video-showcase'); return false;" class="hover:text-sammys-brass transition-colors py-1">Cinematic Showcase</a>
+                <a href="#business" onclick="navigateTo('business'); return false;" class="hover:text-sammys-brass transition-colors py-1">Projects</a>
+                <a href="#about" onclick="navigateTo('about'); return false;" class="hover:text-sammys-brass transition-colors py-1">About</a>
+                <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-sammys-brass transition-colors py-1">Contact</a>
+            </nav>
+
+            <!-- Navigation Actions -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <button onclick="navigateTo('haute-customize')" class="bg-sammys-brass hover:bg-amber-500 text-sammys-charcoal font-semibold px-3 sm:px-5 py-2.5 rounded-sm text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-md touch-target flex items-center justify-center">
+                    <span>Consultation</span>
+                </button>
+                
+                <!-- Mobile & Tablet Menu Toggle Button -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden text-sammys-ivory hover:text-sammys-brass focus:outline-none p-2 touch-target flex flex-col items-center justify-center" aria-label="Toggle Navigation Menu">
+                    <div class="w-6 h-0.5 bg-current my-0.5 transition-all duration-300" id="bar1"></div>
+                    <div class="w-6 h-0.5 bg-current my-0.5 transition-all duration-300" id="bar2"></div>
+                    <div class="w-6 h-0.5 bg-current my-0.5 transition-all duration-300" id="bar3"></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile & Tablet Full-Screen Navigation Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-sammys-charcoal text-sammys-ivory z-40 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col justify-between p-6 sm:p-12 pt-28 pb-10 overflow-y-auto">
+        <div class="flex flex-col space-y-5 text-lg sm:text-2xl font-serif tracking-widest uppercase">
+            <a href="#home" onclick="navigateTo('home'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>01. Home</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#products" onclick="navigateTo('products'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>02. Products & Portfolio</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#haute-customize" onclick="navigateTo('haute-customize'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>03. Haute Customize</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#video-showcase" onclick="navigateTo('video-showcase'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>04. Cinematic Showcase</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#business" onclick="navigateTo('business'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>05. Business & Projects</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#news" onclick="navigateTo('news'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>06. News & Journal</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#about" onclick="navigateTo('about'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>07. About Us</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+            <a href="#contact" onclick="navigateTo('contact'); toggleMobileMenu()" class="hover:text-sammys-brass transition-colors border-b border-stone-800/80 pb-3 flex justify-between items-center">
+                <span>08. Contact Atelier</span> <i class="fa-solid fa-chevron-right text-xs text-sammys-brass"></i>
+            </a>
+        </div>
+        
+        <div class="border-t border-stone-800 pt-6 mt-6">
+            <p class="text-[10px] tracking-widest text-sammys-brass uppercase mb-2">Direct Studio Inquiries</p>
+            <p class="text-xs sm:text-sm font-light text-sammys-stone">concierge@sammysjoinery.com</p>
+            <p class="text-xs sm:text-sm font-light text-sammys-stone mt-1">+1 (800) 420-7266</p>
+            
+            <div class="flex space-x-4 mt-6 text-sammys-stone">
+                <a href="#" class="w-9 h-9 border border-stone-800 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors"><i class="fa-brands fa-instagram text-xs"></i></a>
+                <a href="#" class="w-9 h-9 border border-stone-800 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors"><i class="fa-brands fa-pinterest-p text-xs"></i></a>
+                <a href="#" class="w-9 h-9 border border-stone-800 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN SINGLE PAGE CONTENT CONTAINER -->
+    <main id="main-content" class="page-content min-h-screen">
+
+        <!-- ========================================== -->
+        <!-- 1. HOME PAGE VIEW                          -->
+        <!-- ========================================== -->
+        <section id="page-home" class="page-view">
+            
+            <!-- HERO SLIDESHOW SECTION -->
+            <div class="relative min-h-[90vh] sm:min-h-screen w-full overflow-hidden bg-sammys-charcoal text-sammys-ivory flex items-end pb-16 sm:pb-20 md:pb-24 pt-28">
+                
+                <!-- Background Slide Images -->
+                <div class="absolute inset-0 z-0">
+                    <div class="hero-slide active absolute inset-0 bg-cover bg-center animate-kenburns" style="background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal via-sammys-charcoal/50 to-sammys-charcoal/30"></div>
+                    </div>
+                    <div class="hero-slide absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=2000&q=85');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal via-sammys-charcoal/50 to-sammys-charcoal/30"></div>
+                    </div>
+                    <div class="hero-slide absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=2000&q=85');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal via-sammys-charcoal/50 to-sammys-charcoal/30"></div>
+                    </div>
+                    <div class="hero-slide absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2000&q=85');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal via-sammys-charcoal/50 to-sammys-charcoal/30"></div>
+                    </div>
+                    <div class="hero-slide absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=2000&q=85');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal via-sammys-charcoal/50 to-sammys-charcoal/30"></div>
+                    </div>
+                </div>
+
+                <!-- Hero Content Overlay -->
+                <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 w-full flex flex-col md:flex-row md:items-end justify-between gap-8">
+                    <div class="max-w-2xl">
+                        <span class="text-[10px] sm:text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Architectural Joinery Studio</span>
+                        <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-light leading-tight tracking-tight mb-4 text-white">
+                            BESPOKE CABINETRY
+                        </h1>
+                        <p class="text-sammys-stone text-xs sm:text-sm md:text-base font-light tracking-wide max-w-lg mb-6 sm:mb-8 leading-relaxed">
+                            Crafted around the way you live. Custom cabinetry and architectural joinery engineered for refined residential and project spaces.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
+                            <a href="#products" onclick="navigateTo('products')" class="px-6 sm:px-8 py-3.5 sm:py-4 bg-sammys-ivory text-sammys-charcoal text-xs uppercase tracking-luxury font-medium hover:bg-sammys-brass hover:text-white transition-all duration-300 text-center touch-target">
+                                Explore Our Work
+                            </a>
+                            <a href="#haute-customize" onclick="navigateTo('haute-customize')" class="px-6 sm:px-8 py-3.5 sm:py-4 border border-sammys-stone/40 text-sammys-ivory text-xs uppercase tracking-luxury font-medium hover:border-sammys-brass hover:text-sammys-brass transition-all duration-300 text-center touch-target">
+                                Start A Project
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slide Counter & Controls -->
+                    <div class="flex items-center space-x-4 text-xs font-mono tracking-widest text-sammys-stone pt-2 md:pt-0">
+                        <span id="slide-counter-curr">01</span>
+                        <div class="w-16 sm:w-24 h-[1px] bg-sammys-stone/30 relative overflow-hidden">
+                            <div id="slide-progress-bar" class="absolute top-0 left-0 h-full w-0 bg-sammys-brass transition-all duration-300"></div>
+                        </div>
+                        <span id="slide-counter-total">05</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHILOSOPHY SECTION -->
+            <section class="py-16 sm:py-24 md:py-32 px-4 sm:px-8 lg:px-12 bg-sammys-ivory text-sammys-charcoal">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                    <div class="lg:col-span-7">
+                        <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-3 sm:mb-4">Philosophy & Purpose</span>
+                        <h2 class="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-light leading-snug tracking-tight text-sammys-charcoal">
+                            Crafted for your space.<br class="hidden sm:inline">Designed around you.
+                        </h2>
+                    </div>
+                    <div class="lg:col-span-5 text-sammys-espresso/80 font-light text-sm sm:text-base md:text-lg leading-relaxed space-y-4 sm:space-y-6">
+                        <p>
+                            At Sammy’s, we reject standardized modules. We view cabinetry not merely as functional furniture, but as an integral extension of architectural form.
+                        </p>
+                        <p>
+                            Every kitchen, wardrobe, wall panel, and hidden passage is conceptualized specifically for the proportions, light, and aesthetic cadence of your residence.
+                        </p>
+                        <div class="pt-2 sm:pt-4">
+                            <a href="#about" onclick="navigateTo('about')" class="inline-flex items-center text-xs tracking-luxury uppercase font-medium text-sammys-brass hover:text-sammys-charcoal transition-colors group touch-target">
+                                Learn About Our Studio <span class="ml-2 group-hover:translate-x-2 transition-transform duration-300">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FEATURED PRODUCTS SHOWCASE (OUR CRAFT) -->
+            <section class="py-16 sm:py-20 px-4 sm:px-8 lg:px-12 bg-stone-200/50">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2">Portfolio Showcase</span>
+                            <h2 class="font-serif text-2xl xs:text-3xl sm:text-5xl font-light tracking-tight">OUR CRAFT</h2>
+                        </div>
+                        <p class="text-sammys-espresso/70 text-xs sm:text-sm max-w-md mt-3 md:mt-0 font-light">
+                            Bespoke joinery engineered across ten distinct architectural disciplines.
+                        </p>
+                    </div>
+
+                    <!-- Asymmetrical Responsive Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6">
+                        
+                        <!-- Kitchens -->
+                        <div class="sm:col-span-2 lg:col-span-8 group cursor-pointer img-zoom-container relative min-h-[320px] sm:min-h-[420px] md:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 text-sammys-ivory rounded-sm" onclick="openProductModal('kitchens')">
+                            <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80" alt="Custom Kitchens" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal/90 via-sammys-charcoal/30 to-transparent"></div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] tracking-widest text-sammys-brass uppercase mb-1 block">01 / Residential</span>
+                                <h3 class="font-serif text-2xl sm:text-3xl md:text-4xl font-light mb-2">Custom Kitchens</h3>
+                                <p class="text-sammys-stone/80 text-xs sm:text-sm font-light max-w-md">Seamless architectural integration, concealed appliances, and precision timber & stone detailing.</p>
+                                <span class="mt-3 inline-flex items-center text-xs tracking-luxury text-sammys-brass uppercase font-medium">Explore Details <i class="fa-solid fa-arrow-right ml-2 text-xs transition-transform group-hover:translate-x-2"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Wardrobes -->
+                        <div class="sm:col-span-2 lg:col-span-4 group cursor-pointer img-zoom-container relative min-h-[320px] sm:min-h-[420px] md:min-h-[480px] flex flex-col justify-end p-6 sm:p-8 text-sammys-ivory rounded-sm" onclick="openProductModal('wardrobes')">
+                            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80" alt="Wardrobes" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal/90 via-sammys-charcoal/30 to-transparent"></div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] tracking-widest text-sammys-brass uppercase mb-1 block">02 / Dressing</span>
+                                <h3 class="font-serif text-2xl sm:text-3xl font-light mb-2">Wardrobes</h3>
+                                <p class="text-sammys-stone/80 text-xs font-light">Custom walk-ins, integrated LED illumination, and suede-lined velvet drawers.</p>
+                                <span class="mt-3 inline-flex items-center text-xs tracking-luxury text-sammys-brass uppercase font-medium">Explore Details <i class="fa-solid fa-arrow-right ml-2 text-xs transition-transform group-hover:translate-x-2"></i></span>
+                            </div>
+                        </div>
+
+                        <!-- Vanities -->
+                        <div class="sm:col-span-1 lg:col-span-4 group cursor-pointer img-zoom-container relative min-h-[280px] sm:min-h-[350px] flex flex-col justify-end p-6 text-sammys-ivory rounded-sm" onclick="openProductModal('vanities')">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" alt="Bathroom Vanities" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal/90 via-sammys-charcoal/30 to-transparent"></div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] tracking-widest text-sammys-brass uppercase mb-1 block">03 / Sanctuary</span>
+                                <h3 class="font-serif text-xl sm:text-2xl font-light mb-1">Bathroom Vanities</h3>
+                                <p class="text-sammys-stone/80 text-xs font-light">Moisture-sealed hardwood and fluted stone basins.</p>
+                            </div>
+                        </div>
+
+                        <!-- TV Units & Wall Panels -->
+                        <div class="sm:col-span-1 lg:col-span-4 group cursor-pointer img-zoom-container relative min-h-[280px] sm:min-h-[350px] flex flex-col justify-end p-6 text-sammys-ivory rounded-sm" onclick="openProductModal('wallpanels')">
+                            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="Wall Panels" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal/90 via-sammys-charcoal/30 to-transparent"></div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] tracking-widest text-sammys-brass uppercase mb-1 block">04 / Living</span>
+                                <h3 class="font-serif text-xl sm:text-2xl font-light mb-1">Wall Panels & TV Units</h3>
+                                <p class="text-sammys-stone/80 text-xs font-light">Acoustic slat panels and floating media consoles.</p>
+                            </div>
+                        </div>
+
+                        <!-- Wine Cabinets & Hidden Doors -->
+                        <div class="sm:col-span-2 lg:col-span-4 group cursor-pointer img-zoom-container relative min-h-[280px] sm:min-h-[350px] flex flex-col justify-end p-6 text-sammys-ivory rounded-sm" onclick="openProductModal('wine')">
+                            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" alt="Wine Cabinets" class="absolute inset-0 w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-sammys-charcoal/90 via-sammys-charcoal/30 to-transparent"></div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] tracking-widest text-sammys-brass uppercase mb-1 block">05 / Specialty</span>
+                                <h3 class="font-serif text-xl sm:text-2xl font-light mb-1">Wine & Hidden Passages</h3>
+                                <p class="text-sammys-stone/80 text-xs font-light">Climate-controlled cellars and flush pivot doors.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- CINEMATIC VIDEO SHOWCASE SECTION -->
+            <section id="see-the-craft" class="py-16 sm:py-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory text-sammys-charcoal">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+                        <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2">Cinematic Insight</span>
+                        <h2 class="font-serif text-2xl xs:text-3xl sm:text-5xl font-light tracking-tight mb-3">SEE THE CRAFT</h2>
+                        <p class="text-sammys-espresso/70 text-xs sm:text-sm font-light">From initial bench timber selection through hand finishing and site installation.</p>
+                    </div>
+
+                    <!-- Responsive 1/2/3 Column Video Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                        
+                        <!-- Video 1 -->
+                        <div class="flex flex-col space-y-3 sm:space-y-4">
+                            <div class="relative overflow-hidden rounded-sm bg-sammys-charcoal aspect-[4/5] shadow-lg">
+                                <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-90">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-carpenter-sanding-a-piece-of-wood-40333-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="absolute top-3 left-3 bg-sammys-charcoal/80 backdrop-blur-sm px-2.5 py-1 text-[9px] tracking-widest text-sammys-brass uppercase">01 / CRAFT</div>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-lg sm:text-xl font-light">Precision Benchwork</h4>
+                                <p class="text-sammys-espresso/70 text-xs font-light mt-1">Hand-selected timber veneers milled to sub-millimeter exactness.</p>
+                            </div>
+                        </div>
+
+                        <!-- Video 2 -->
+                        <div class="flex flex-col space-y-3 sm:space-y-4">
+                            <div class="relative overflow-hidden rounded-sm bg-sammys-charcoal aspect-[4/5] shadow-lg">
+                                <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-90">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-craftsman-measuring-a-piece-of-wood-41481-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="absolute top-3 left-3 bg-sammys-charcoal/80 backdrop-blur-sm px-2.5 py-1 text-[9px] tracking-widest text-sammys-brass uppercase">02 / FITMENT</div>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-lg sm:text-xl font-light">Architectural Fitment</h4>
+                                <p class="text-sammys-espresso/70 text-xs font-light mt-1">Master joiners ensuring seamless wall alignment and flush trims on-site.</p>
+                            </div>
+                        </div>
+
+                        <!-- Video 3 -->
+                        <div class="flex flex-col space-y-3 sm:space-y-4 sm:col-span-2 lg:col-span-1">
+                            <div class="relative overflow-hidden rounded-sm bg-sammys-charcoal aspect-[4/5] shadow-lg">
+                                <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-90">
+                                    <source src="https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-carpenter-working-with-a-sander-41480-large.mp4" type="video/mp4">
+                                </video>
+                                <div class="absolute top-3 left-3 bg-sammys-charcoal/80 backdrop-blur-sm px-2.5 py-1 text-[9px] tracking-widest text-sammys-brass uppercase">03 / FINISH</div>
+                            </div>
+                            <div>
+                                <h4 class="font-serif text-lg sm:text-xl font-light">Tactile Perfection</h4>
+                                <p class="text-sammys-espresso/70 text-xs font-light mt-1">Hand-rubbed organic oils, micro-beveled edges, and soft-close hardware.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROCESS TIMELINE SECTION -->
+            <section class="py-16 sm:py-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory text-sammys-charcoal border-t border-stone-200">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+                        <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2">Methodology</span>
+                        <h2 class="font-serif text-2xl xs:text-3xl sm:text-5xl font-light tracking-tight">OUR PROCESS</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8">
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">01</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Consultation</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Initial site analysis, architectural review, and functional briefing.</p>
+                        </div>
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">02</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Design & CAD</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">3D spatial modelling, elevation drafting, and hardware specification.</p>
+                        </div>
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">03</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Curation</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Selecting timber veneers, marble, lacquer finishes, and handles.</p>
+                        </div>
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">04</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Crafting</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Precision workshop milling, assembly, and hand-finished detailing.</p>
+                        </div>
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">05</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Installation</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Master joiners fit cabinetry flush with walls and ceilings.</p>
+                        </div>
+                        <div class="space-y-2 border-l-2 sm:border-l-0 sm:border-t border-sammys-brass pl-4 sm:pl-0 sm:pt-4">
+                            <span class="font-mono text-xs text-sammys-brass font-semibold">06</span>
+                            <h4 class="font-serif text-lg sm:text-xl font-medium">Completion</h4>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Final quality audit, cleaning, and lifetime warranty handover.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. PRODUCTS PAGE VIEW                      -->
+        <!-- ========================================== -->
+        <section id="page-products" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-8 sm:mb-12 text-center max-w-3xl mx-auto">
+                    <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Architectural Catalogue</span>
+                    <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl font-light mb-3">OUR PRODUCTS</h1>
+                    <p class="text-sammys-espresso/70 text-xs sm:text-sm font-light">Bespoke cabinetry and architectural joinery, tailored specifically to each spatial environment.</p>
+                </div>
+
+                <!-- Product Filter Tags - Horizontally Scrollable on Mobile -->
+                <div class="flex items-center overflow-x-auto no-scrollbar gap-2 sm:gap-3 mb-10 sm:mb-16 border-b border-stone-300 pb-4 text-xs uppercase tracking-luxury whitespace-nowrap">
+                    <button onclick="filterProducts('all', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-sammys-charcoal bg-sammys-charcoal text-sammys-ivory transition-all touch-target">All Joinery</button>
+                    <button onclick="filterProducts('kitchen', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-stone-300 text-sammys-charcoal hover:border-sammys-brass transition-all touch-target">Kitchens</button>
+                    <button onclick="filterProducts('wardrobe', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-stone-300 text-sammys-charcoal hover:border-sammys-brass transition-all touch-target">Wardrobes</button>
+                    <button onclick="filterProducts('vanities', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-stone-300 text-sammys-charcoal hover:border-sammys-brass transition-all touch-target">Vanities</button>
+                    <button onclick="filterProducts('living', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-stone-300 text-sammys-charcoal hover:border-sammys-brass transition-all touch-target">Living & Panels</button>
+                    <button onclick="filterProducts('specialty', event)" class="product-filter-btn px-4 py-2.5 rounded-sm border border-stone-300 text-sammys-charcoal hover:border-sammys-brass transition-all touch-target">Wine & Hidden Passages</button>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    
+                    <!-- Product 1 -->
+                    <div class="product-card kitchen group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('kitchens')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80" alt="Sculptural Kitchen Island" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Kitchens</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Sculptural Kitchen Island</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">Integrated marble waterfalls, pocket-door breakfast pantries, and concealed extractor units.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card wardrobe group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('wardrobes')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80" alt="Walk-In Suite Wardrobe" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Wardrobes</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Master Dressing Suite</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">Bronze framed glass doors, warm 2700K integrated LED channels, and leather insert drawers.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card vanities group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('vanities')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" alt="Fluted Stone Vanity" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Vanities</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Floating Fluted Vanity</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">Water-resistant teak frame with carved Travertine floating vanity drawers.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card living group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('wallpanels')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="Architectural Wall Panels" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Living & Wall Panels</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Acoustic Timber Cladding</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">Full-height walnut batten wall panels with integrated hidden storage doors.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Product 5 -->
+                    <div class="product-card specialty group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('wine')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" alt="Sommelier Wine Display" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Specialty Joinery</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Sommelier Wine Display</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">UV-filtered glass enclosure, brass rod bottle racks, and climate-regulated joinery.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                    <!-- Product 6 -->
+                    <div class="product-card kitchen group cursor-pointer bg-white border border-stone-200 p-5 sm:p-6 flex flex-col justify-between rounded-sm shadow-sm" onclick="openProductModal('kitchens')">
+                        <div class="img-zoom-container overflow-hidden aspect-[4/3] mb-4 sm:mb-6 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" alt="Concealed Laundry Cabinetry" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="text-[10px] tracking-widest text-sammys-brass uppercase">Laundry & Utility</span>
+                            <h3 class="font-serif text-xl sm:text-2xl font-light mt-1 mb-2">Concealed Laundry Suite</h3>
+                            <p class="text-sammys-espresso/70 text-xs font-light leading-relaxed mb-4">Fold-away bi-fold doors, integrated laundry hampers, and moisture-sealed quartz tops.</p>
+                        </div>
+                        <div class="border-t border-stone-100 pt-3 sm:pt-4 flex items-center justify-between text-xs tracking-luxury text-sammys-brass uppercase">
+                            <span>View Specifications</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. HAUTE CUSTOMIZE PAGE VIEW               -->
+        <!-- ========================================== -->
+        <section id="page-haute-customize" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12 bg-sammys-charcoal text-sammys-ivory min-h-screen">
+            <div class="max-w-7xl mx-auto">
+                <div class="max-w-3xl mb-12 sm:mb-16">
+                    <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Pure Atelier Service</span>
+                    <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl font-light mb-3">HAUTE CUSTOMIZE</h1>
+                    <p class="text-sammys-stone text-xs sm:text-base font-light">Nothing standard. Everything considered. Experience complete freedom in joinery commission design.</p>
+                </div>
+
+                <!-- Customization Journey Steps Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 border-y border-stone-800 py-6 sm:py-8 mb-12 sm:mb-16 text-center">
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">01. IDEA</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">Spatial Concepts</p>
+                    </div>
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">02. DESIGN</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">CAD & 3D Renders</p>
+                    </div>
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">03. MATERIAL</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">Veneers & Stone</p>
+                    </div>
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">04. CRAFT</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">Master Milling</p>
+                    </div>
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">05. INSTALL</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">Site Assembly</p>
+                    </div>
+                    <div class="p-2">
+                        <span class="text-[11px] text-sammys-brass font-mono">06. REVEAL</span>
+                        <p class="text-xs text-sammys-stone/80 mt-1">Handover & Care</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Material Swatches Selector -->
+                <div class="mb-12 bg-sammys-espresso/60 border border-stone-800 p-6 rounded-sm">
+                    <span class="text-xs uppercase tracking-luxury text-sammys-brass block mb-3 font-medium">Interactive Material Palette</span>
+                    <p class="text-xs text-sammys-stone mb-4 font-light">Select material finishes to preview custom textures in your brief:</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <button type="button" onclick="selectMaterialSwatch('Smoked European Oak')" class="material-swatch-btn p-3 border border-sammys-brass bg-sammys-charcoal flex items-center space-x-3 rounded-sm text-left hover:border-amber-400 transition-all">
+                            <span class="w-8 h-8 rounded-full bg-amber-900 border border-amber-700 shadow-inner block"></span>
+                            <div>
+                                <p class="text-xs font-medium text-white">Smoked Oak</p>
+                                <p class="text-[10px] text-sammys-stone">Deep Grain</p>
+                            </div>
+                        </button>
+                        <button type="button" onclick="selectMaterialSwatch('American Walnut')" class="material-swatch-btn p-3 border border-stone-700 bg-sammys-charcoal flex items-center space-x-3 rounded-sm text-left hover:border-sammys-brass transition-all">
+                            <span class="w-8 h-8 rounded-full bg-stone-800 border border-stone-600 shadow-inner block"></span>
+                            <div>
+                                <p class="text-xs font-medium text-white">American Walnut</p>
+                                <p class="text-[10px] text-sammys-stone">Rich Warmth</p>
+                            </div>
+                        </button>
+                        <button type="button" onclick="selectMaterialSwatch('Warm Ivory Matte Lacquer')" class="material-swatch-btn p-3 border border-stone-700 bg-sammys-charcoal flex items-center space-x-3 rounded-sm text-left hover:border-sammys-brass transition-all">
+                            <span class="w-8 h-8 rounded-full bg-stone-200 border border-stone-400 shadow-inner block"></span>
+                            <div>
+                                <p class="text-xs font-medium text-white">Ivory Lacquer</p>
+                                <p class="text-[10px] text-sammys-stone">5% Velvet Finish</p>
+                            </div>
+                        </button>
+                        <button type="button" onclick="selectMaterialSwatch('Charcoal Stained Ash')" class="material-swatch-btn p-3 border border-stone-700 bg-sammys-charcoal flex items-center space-x-3 rounded-sm text-left hover:border-sammys-brass transition-all">
+                            <span class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-700 shadow-inner block"></span>
+                            <div>
+                                <p class="text-xs font-medium text-white">Charcoal Ash</p>
+                                <p class="text-[10px] text-sammys-stone">Architectural</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Configurator Form -->
+                <div class="bg-sammys-espresso/80 border border-stone-800 p-6 sm:p-10 lg:p-12 rounded-sm max-w-4xl mx-auto">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-light mb-2 text-center">Bespoke Project Configurator</h3>
+                    <p class="text-sammys-stone text-xs text-center mb-6 sm:mb-8 font-light">Configure your initial spatial parameters and receive a preliminary consultation outline.</p>
+
+                    <form id="configurator-form" onsubmit="handleConfiguratorSubmit(event)" class="space-y-4 sm:space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-[11px] sm:text-xs uppercase tracking-luxury text-sammys-brass mb-2">Space Category</label>
+                                <select id="cfg-space" class="w-full bg-sammys-charcoal border border-stone-700 text-sammys-ivory px-3 sm:px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                    <option>Full Residence Joinery</option>
+                                    <option>Primary Kitchen Suite</option>
+                                    <option>Master Walk-in Wardrobe</option>
+                                    <option>Architectural Wall Paneling</option>
+                                    <option>Wine Cellar & Bar</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] sm:text-xs uppercase tracking-luxury text-sammys-brass mb-2">Primary Timber / Finish</label>
+                                <select id="cfg-finish" class="w-full bg-sammys-charcoal border border-stone-700 text-sammys-ivory px-3 sm:px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                    <option value="Smoked European Oak">Smoked European Oak</option>
+                                    <option value="American Walnut">American Walnut</option>
+                                    <option value="Warm Ivory Matte Lacquer">Warm Ivory Matte Lacquer</option>
+                                    <option value="Charcoal Stained Ash">Charcoal Stained Ash</option>
+                                    <option value="Custom Veneer Match">Custom Veneer Match</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-[11px] sm:text-xs uppercase tracking-luxury text-sammys-brass mb-2">Hardware & Accents</label>
+                                <select id="cfg-hardware" class="w-full bg-sammys-charcoal border border-stone-700 text-sammys-ivory px-3 sm:px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                    <option>Brushed Muted Brass</option>
+                                    <option>Bronze Anodized Trim</option>
+                                    <option>Handleless Push-to-Open</option>
+                                    <option>Recessed Integrated Leather Handles</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] sm:text-xs uppercase tracking-luxury text-sammys-brass mb-2">Project Timeline</label>
+                                <select id="cfg-timeline" class="w-full bg-sammys-charcoal border border-stone-700 text-sammys-ivory px-3 sm:px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                    <option>3 - 6 Months</option>
+                                    <option>6 - 12 Months</option>
+                                    <option>12+ Months (Planning Stage)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[11px] sm:text-xs uppercase tracking-luxury text-sammys-brass mb-2">Your Email Address</label>
+                            <input type="email" required id="cfg-email" placeholder="client@architects.com" class="w-full bg-sammys-charcoal border border-stone-700 text-sammys-ivory px-3 sm:px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                        </div>
+
+                        <div class="text-center pt-2 sm:pt-4">
+                            <button type="submit" class="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-sammys-brass text-sammys-charcoal text-xs uppercase tracking-luxury font-medium hover:bg-sammys-ivory transition-all touch-target">
+                                Request Custom Project Brief →
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. BUSINESS & PROJECTS PAGE VIEW          -->
+        <!-- ========================================== -->
+        <section id="page-business" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory">
+            <div class="max-w-7xl mx-auto">
+                <div class="max-w-3xl mb-12 sm:mb-16">
+                    <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Architects & Developers</span>
+                    <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl font-light mb-3">BUSINESS & PROJECTS</h1>
+                    <p class="text-sammys-espresso/70 text-xs sm:text-base font-light">Collaborative joinery solutions designed for luxury residential developments, interior designers, and commercial hospitality spaces.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-20">
+                    <div class="p-6 sm:p-8 bg-white border border-stone-200 space-y-3 rounded-sm">
+                        <span class="text-sammys-brass font-serif text-2xl">01</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-light">Architects & Designers</h3>
+                        <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">We translate complex architectural drafts into engineered cabinetry schedules with precise tolerances.</p>
+                    </div>
+                    <div class="p-6 sm:p-8 bg-white border border-stone-200 space-y-3 rounded-sm">
+                        <span class="text-sammys-brass font-serif text-2xl">02</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-light">Property Developers</h3>
+                        <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Scalable, multi-unit luxury wardrobe and kitchen packages crafted to elevate high-end apartment developments.</p>
+                    </div>
+                    <div class="p-6 sm:p-8 bg-white border border-stone-200 space-y-3 rounded-sm">
+                        <span class="text-sammys-brass font-serif text-2xl">03</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-light">Hospitality & Retail</h3>
+                        <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Bespoke bar fronts, wall paneling, and reception credenzas built to sustain high-traffic commercial use.</p>
+                    </div>
+                </div>
+
+                <!-- Business Enquiry Form -->
+                <div class="max-w-3xl mx-auto bg-white border border-stone-200 p-6 sm:p-10 lg:p-12 shadow-sm rounded-sm">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-light mb-6 text-center">Work With Sammy’s</h3>
+                    <form onsubmit="handleFormSubmit(event, 'Business Enquiry Sent')" class="space-y-4 sm:space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Your Name *</label>
+                                <input type="text" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Company / Studio *</label>
+                                <input type="text" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div>
+                                <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Work Email *</label>
+                                <input type="email" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Project Location</label>
+                                <input type="text" placeholder="e.g. London, New York, Dubai" class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Project Scope & Details</label>
+                            <textarea rows="4" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm" placeholder="Briefly describe the number of units or spatial requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3.5 sm:py-4 bg-sammys-charcoal text-sammys-ivory text-xs uppercase tracking-luxury font-medium hover:bg-sammys-brass hover:text-sammys-charcoal transition-all touch-target">
+                            Submit Professional Enquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5. NEWS & JOURNAL PAGE VIEW                -->
+        <!-- ========================================== -->
+        <section id="page-news" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory">
+            <div class="max-w-7xl mx-auto">
+                <div class="max-w-3xl mb-12 sm:mb-16">
+                    <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Editorial Journal</span>
+                    <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl font-light mb-3">NEWS & INSIGHTS</h1>
+                    <p class="text-sammys-espresso/70 text-xs sm:text-base font-light">Behind the craft, material spotlights, and studio project reveals.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    
+                    <article class="bg-white border border-stone-200 overflow-hidden flex flex-col justify-between group cursor-pointer rounded-sm">
+                        <div class="img-zoom-container h-48 sm:h-56">
+                            <img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80" alt="Material Spotlight" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-5 sm:p-6 space-y-2">
+                            <span class="text-[10px] font-mono tracking-widest text-sammys-brass uppercase">MATERIAL SPOTLIGHT</span>
+                            <h3 class="font-serif text-xl font-light group-hover:text-sammys-brass transition-colors">The Tactile Beauty of Smoked Oak</h3>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">How vacuum fuming deepens timber grain density without paint pigment distortion.</p>
+                        </div>
+                        <div class="p-5 sm:p-6 border-t border-stone-100 text-xs tracking-luxury text-sammys-brass uppercase">Read Story →</div>
+                    </article>
+
+                    <article class="bg-white border border-stone-200 overflow-hidden flex flex-col justify-between group cursor-pointer rounded-sm">
+                        <div class="img-zoom-container h-48 sm:h-56">
+                            <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80" alt="Completed Project" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-5 sm:p-6 space-y-2">
+                            <span class="text-[10px] font-mono tracking-widest text-sammys-brass uppercase">PROJECT REVEAL</span>
+                            <h3 class="font-serif text-xl font-light group-hover:text-sammys-brass transition-colors">Concealed Architecture in Aspen</h3>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Integrating heavy stone facades with silent motorized cabinet doors.</p>
+                        </div>
+                        <div class="p-5 sm:p-6 border-t border-stone-100 text-xs tracking-luxury text-sammys-brass uppercase">Read Story →</div>
+                    </article>
+
+                    <article class="bg-white border border-stone-200 overflow-hidden flex flex-col justify-between group cursor-pointer rounded-sm sm:col-span-2 lg:col-span-1">
+                        <div class="img-zoom-container h-48 sm:h-56">
+                            <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Workshop Insight" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-5 sm:p-6 space-y-2">
+                            <span class="text-[10px] font-mono tracking-widest text-sammys-brass uppercase">STUDIO INSIGHT</span>
+                            <h3 class="font-serif text-xl font-light group-hover:text-sammys-brass transition-colors">Sub-Millimeter Cabinetry Calibration</h3>
+                            <p class="text-xs text-sammys-espresso/70 leading-relaxed font-light">Why modern interior joinery requires CNC precision paired with hand sanding.</p>
+                        </div>
+                        <div class="p-5 sm:p-6 border-t border-stone-100 text-xs tracking-luxury text-sammys-brass uppercase">Read Story →</div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 6. ABOUT US PAGE VIEW                      -->
+        <!-- ========================================== -->
+        <section id="page-about" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory">
+            <div class="max-w-7xl mx-auto space-y-12 sm:space-y-16">
+                <div class="max-w-3xl">
+                    <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Our Heritage & Values</span>
+                    <h1 class="font-serif text-3xl xs:text-4xl sm:text-6xl font-light mb-4 sm:mb-6">MADE WITH INTENTION.</h1>
+                    <p class="text-sammys-espresso/80 text-sm sm:text-lg font-light leading-relaxed">
+                        Founded on the principle that joinery should never compete with architecture, Sammy’s creates bespoke cabinet environments that harmonize geometry, texture, and everyday utility.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
+                    <div class="img-zoom-container overflow-hidden h-[300px] sm:h-[420px] rounded-sm relative group">
+                        <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80" alt="Cauval Sammy Group Ltd. Heritage" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 inset-x-0 bg-sammys-charcoal/85 p-3 text-[10px] text-sammys-stone uppercase tracking-widest text-center">
+                            Historical Milestone: Cauval Sammy Group Ltd. Partnership
+                        </div>
+                    </div>
+                    <div class="space-y-4 sm:space-y-6">
+                        <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block">Studio Heritage & Philosophy</span>
+                        <blockquote class="font-serif text-xl sm:text-2xl md:text-3xl font-light italic text-sammys-charcoal border-l-2 border-sammys-brass pl-4 sm:pl-6 py-1">
+                            “Good cabinetry should feel like it belongs there — designed with the architecture, not simply placed inside it.”
+                        </blockquote>
+                        <p class="text-sammys-espresso/70 text-xs sm:text-sm font-light leading-relaxed">
+                            Our master craftspeople combine legacy European joinery techniques with advanced CNC woodworking infrastructure. From global brand partnerships such as Cauval Sammy Group to private villa commissions, every piece is engineered with sub-millimeter precision.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 7. CONTACT PAGE VIEW                       -->
+        <!-- ========================================== -->
+        <section id="page-contact" class="page-view hidden pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-12 bg-sammys-ivory">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+                    <div class="lg:col-span-5 space-y-6 sm:space-y-8">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest-xl text-sammys-brass font-medium block mb-2 sm:mb-3">Get In Touch</span>
+                            <h1 class="font-serif text-3xl xs:text-4xl sm:text-5xl font-light mb-3">LET’S TALK ABOUT YOUR PROJECT.</h1>
+                            <p class="text-sammys-espresso/70 text-xs sm:text-sm font-light leading-relaxed">
+                                Visit our design studio or schedule a private consultation with our architectural joinery team.
+                            </p>
+                        </div>
+
+                        <div class="space-y-4 border-t border-stone-300 pt-6 text-xs font-light">
+                            <div>
+                                <p class="text-sammys-brass uppercase tracking-luxury font-medium">Head Atelier & Showroom</p>
+                                <p class="text-sammys-charcoal text-sm mt-1">450 Architectural Way, Studio District, NY 10012</p>
+                            </div>
+                            <div>
+                                <p class="text-sammys-brass uppercase tracking-luxury font-medium">Direct Contact</p>
+                                <p class="text-sammys-charcoal text-sm mt-1">concierge@sammysjoinery.com</p>
+                                <p class="text-sammys-charcoal text-sm">+1 (800) 420-7266</p>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="pt-2 border-t border-stone-300">
+                            <p class="text-xs uppercase tracking-luxury text-sammys-brass mb-3">Connect With Us</p>
+                            <div class="flex space-x-3 text-sammys-charcoal">
+                                <a href="#" class="w-10 h-10 border border-stone-300 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors touch-target"><i class="fa-brands fa-instagram text-xs"></i></a>
+                                <a href="#" class="w-10 h-10 border border-stone-300 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors touch-target"><i class="fa-brands fa-pinterest-p text-xs"></i></a>
+                                <a href="#" class="w-10 h-10 border border-stone-300 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors touch-target"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                                <a href="#" class="w-10 h-10 border border-stone-300 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors touch-target"><i class="fa-brands fa-youtube text-xs"></i></a>
+                                <a href="#" class="w-10 h-10 border border-stone-300 flex items-center justify-center rounded-full hover:border-sammys-brass hover:text-sammys-brass transition-colors touch-target"><i class="fa-brands fa-whatsapp text-xs"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-white border border-stone-200 p-6 sm:p-10 lg:p-12 shadow-sm rounded-sm">
+                        <form onsubmit="handleFormSubmit(event, 'Project Enquiry Received')" class="space-y-4 sm:space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                                <div>
+                                    <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Full Name *</label>
+                                    <input type="text" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Email Address *</label>
+                                    <input type="email" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                                <div>
+                                    <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Phone Number</label>
+                                    <input type="tel" class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Project Location</label>
+                                    <input type="text" class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs uppercase tracking-luxury text-sammys-brass mb-2">Project Message *</label>
+                                <textarea rows="4" required class="w-full bg-sammys-ivory border border-stone-300 px-4 py-3 text-xs focus:outline-none focus:border-sammys-brass rounded-sm" placeholder="Tell us about your project space and requirements..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3.5 sm:py-4 bg-sammys-charcoal text-sammys-ivory text-xs uppercase tracking-luxury font-medium hover:bg-sammys-brass hover:text-sammys-charcoal transition-all touch-target">
+                                Send Enquiry →
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PRODUCT DETAIL SPECIFICATIONS MODAL -->
+    <div id="product-modal" class="fixed inset-0 bg-sammys-charcoal/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 sm:p-6">
+        <div class="bg-sammys-ivory text-sammys-charcoal max-w-xl w-full p-6 sm:p-10 relative max-h-[85vh] overflow-y-auto rounded-sm border border-sammys-stone">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-sammys-charcoal hover:text-sammys-brass text-xl touch-target flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <span id="modal-category" class="text-xs uppercase tracking-widest text-sammys-brass font-medium">Specifications</span>
+            <h3 id="modal-title" class="font-serif text-2xl sm:text-3xl font-light mt-1 mb-3">Custom Joinery Specification</h3>
+            <p id="modal-desc" class="text-xs text-sammys-espresso/80 leading-relaxed mb-6 font-light">Detailed material composition, drawer hardware engineering, and bespoke dimensions.</p>
+            
+            <div class="space-y-3 text-xs border-t border-stone-300 pt-4">
+                <p><strong>Timber Species:</strong> FSC-Certified Oak, Walnut, or Ash</p>
+                <p><strong>Hardware Systems:</strong> Blum Legrabox / Grass Soft-Close Runners</p>
+                <p><strong>Finish Options:</strong> Hand-rubbed hardwax oil, 5% dead-matte lacquer</p>
+                <p><strong>Customization Scope:</strong> Made to sub-millimeter project tolerances</p>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-stone-300 flex justify-end">
+                <button onclick="closeProductModal(); navigateTo('contact');" class="w-full sm:w-auto px-6 py-3 bg-sammys-brass text-sammys-charcoal text-xs uppercase tracking-luxury font-medium hover:bg-sammys-charcoal hover:text-sammys-ivory transition-all touch-target">
+                    Inquire About Specification
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast" class="fixed bottom-6 right-4 sm:right-8 z-50 bg-sammys-charcoal text-sammys-ivory border border-sammys-brass px-5 py-3.5 text-xs uppercase tracking-luxury transform translate-y-24 opacity-0 transition-all duration-300 shadow-2xl flex items-center space-x-3 max-w-[90vw] sm:max-w-md">
+        <i class="fa-solid fa-circle-check text-sammys-brass text-sm"></i>
+        <span id="toast-msg">Action Completed Successfully.</span>
+    </div>
+
+    <!-- DARK FOOTER -->
+    <footer class="bg-sammys-charcoal text-sammys-ivory pt-16 sm:pt-20 pb-10 px-4 sm:px-8 lg:px-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 pb-12 border-b border-stone-800">
+            
+            <!-- Brand Info Column -->
+            <div class="md:col-span-5 space-y-3 sm:space-y-4">
+                <a href="#home" onclick="navigateTo('home')" class="inline-block touch-target">
+                    <span class="font-serif text-2xl sm:text-3xl tracking-widest uppercase font-light text-sammys-ivory">SAMMY’S</span>
+                    <span class="text-[9px] tracking-widest-xl text-sammys-brass uppercase block -mt-1 font-medium">BESPOKE JOINERY</span>
+                </a>
+                <p class="text-sammys-taupe text-xs max-w-sm font-light leading-relaxed">
+                    Custom cabinetry and architectural joinery designed specifically for refined residential and project environments worldwide.
+                </p>
+            </div>
+
+            <!-- Responsive Sitemap Links -->
+            <div class="md:col-span-3 grid grid-cols-2 gap-4 text-xs uppercase tracking-luxury font-medium">
+                <div class="space-y-2">
+                    <p class="text-sammys-brass font-serif text-sm lowercase italic font-normal mb-3">Explore</p>
+                    <p><a href="#home" onclick="navigateTo('home')" class="hover:text-sammys-brass transition-colors">Home</a></p>
+                    <p><a href="#products" onclick="navigateTo('products')" class="hover:text-sammys-brass transition-colors">Portfolio</a></p>
+                    <p><a href="#haute-customize" onclick="navigateTo('haute-customize')" class="hover:text-sammys-brass transition-colors">Customize</a></p>
+                </div>
+                <div class="space-y-2">
+                    <p class="text-sammys-brass font-serif text-sm lowercase italic font-normal mb-3">Studio</p>
+                    <p><a href="#business" onclick="navigateTo('business')" class="hover:text-sammys-brass transition-colors">Projects</a></p>
+                    <p><a href="#about" onclick="navigateTo('about')" class="hover:text-sammys-brass transition-colors">About</a></p>
+                    <p><a href="#contact" onclick="navigateTo('contact')" class="hover:text-sammys-brass transition-colors">Contact</a></p>
+                </div>
+            </div>
+
+            <!-- Journal Subscription -->
+            <div class="md:col-span-4 space-y-3">
+                <p class="text-sammys-brass font-serif text-sm lowercase italic font-normal">Journal Subscription</p>
+                <p class="text-xs text-sammys-taupe font-light">Receive private invitations to project reveals and material releases.</p>
+                <form onsubmit="handleFormSubmit(event, 'Subscribed to Sammy’s Journal')" class="flex">
+                    <input type="email" required placeholder="Enter email address" class="bg-sammys-espresso border border-stone-700 text-xs px-3 sm:px-4 py-3 text-sammys-ivory focus:outline-none focus:border-sammys-brass w-full rounded-l-sm">
+                    <button type="submit" class="bg-sammys-brass text-sammys-charcoal px-4 text-xs hover:bg-sammys-ivory transition-colors rounded-r-sm touch-target"><i class="fa-solid fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Bottom Bar -->
+        <div class="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-sammys-stone/60 font-light space-y-3 sm:space-y-0 text-center sm:text-left">
+            <p>© 2026 Sammy’s Bespoke Cabinetry & Joinery. All rights reserved.</p>
+            <div class="flex space-x-4 sm:space-x-6">
+                <a href="#" class="hover:text-sammys-brass transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-sammys-brass transition-colors">Terms of Atelier</a>
+                <a href="#" class="hover:text-sammys-brass transition-colors">Guarantee</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function navigateTo(target) {
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.classList.add('is-transitioning');
+            }
+
+            setTimeout(() => {
+                const pageViews = document.querySelectorAll('.page-view');
+                pageViews.forEach(view => view.classList.add('hidden'));
+
+                let pageId = 'page-home';
+                let scrollToId = null;
+
+                switch (target) {
+                    case 'products':
+                    case 'portfolio':
+                        pageId = 'page-products';
+                        break;
+                    case 'haute-customize':
+                    case 'customize':
+                        pageId = 'page-haute-customize';
+                        break;
+                    case 'business':
+                    case 'projects':
+                        pageId = 'page-business';
+                        break;
+                    case 'news':
+                    case 'journal':
+                        pageId = 'page-news';
+                        break;
+                    case 'about':
+                        pageId = 'page-about';
+                        break;
+                    case 'contact':
+                        pageId = 'page-contact';
+                        break;
+                    case 'video-showcase':
+                    case 'see-the-craft':
+                        pageId = 'page-home';
+                        scrollToId = 'see-the-craft';
+                        break;
+                    case 'home':
+                    default:
+                        pageId = 'page-home';
+                        break;
+                }
+
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.remove('hidden');
+                }
+
+                if (scrollToId) {
+                    const scrollTarget = document.getElementById(scrollToId);
+                    if (scrollTarget) {
+                        scrollTarget.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                if (mainContent) {
+                    mainContent.classList.remove('is-transitioning');
+                }
+            }, 150);
+        }
+
+        const mainNav = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                mainNav.classList.remove('py-4', 'lg:py-5');
+                mainNav.classList.add('py-3', 'lg:py-3.5', 'bg-sammys-charcoal/95', 'shadow-2xl');
+            } else {
+                mainNav.classList.remove('py-3', 'lg:py-3.5', 'bg-sammys-charcoal/95', 'shadow-2xl');
+                mainNav.classList.add('py-4', 'lg:py-5');
+            }
+        });
+
+        const slides = document.querySelectorAll('.hero-slide');
+        const slideCounter = document.getElementById('slide-counter-curr');
+        const slideTotalCounter = document.getElementById('slide-counter-total');
+        const progressBar = document.getElementById('slide-progress-bar');
+        let currentSlide = 0;
+
+        if (slideTotalCounter && slides.length) {
+            slideTotalCounter.textContent = String(slides.length).padStart(2, '0');
+        }
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                if (i === index) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            if (slideCounter) {
+                slideCounter.textContent = String(index + 1).padStart(2, '0');
+            }
+            if (progressBar) {
+                progressBar.style.transition = 'none';
+                progressBar.style.width = '0%';
+                setTimeout(() => {
+                    progressBar.style.transition = 'width 3s linear';
+                    progressBar.style.width = '100%';
+                }, 20);
+            }
+        }
+
+        function nextSlide() {
+            if (slides.length === 0) return;
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        if (slides.length > 0) {
+            setInterval(nextSlide, 3000);
+            showSlide(0);
+        }
+
+        const dot = document.getElementById('cursor-dot');
+        const follower = document.getElementById('cursor-follower');
+        const cursorText = document.getElementById('cursor-text');
+
+        if (dot && follower && window.innerWidth >= 1024) {
+            document.addEventListener('mousemove', (e) => {
+                dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                follower.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+            });
+
+            const hoverTargets = document.querySelectorAll('.img-zoom-container, .product-card');
+            hoverTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    follower.classList.add('cursor-hover');
+                    if (cursorText) cursorText.classList.remove('opacity-0');
+                });
+                el.addEventListener('mouseleave', () => {
+                    follower.classList.remove('cursor-hover');
+                    if (cursorText) cursorText.classList.add('opacity-0');
+                });
+            });
+        }
+
+        let mobileOpen = false;
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const bar1 = document.getElementById('bar1');
+            const bar2 = document.getElementById('bar2');
+            const bar3 = document.getElementById('bar3');
+
+            mobileOpen = !mobileOpen;
+            if (mobileOpen) {
+                if (menu) menu.classList.remove('translate-x-full');
+                if (bar1) bar1.classList.add('rotate-45', 'translate-y-1.5');
+                if (bar2) bar2.classList.add('opacity-0');
+                if (bar3) bar3.classList.add('-rotate-45', '-translate-y-1.5');
+                document.body.style.overflow = 'hidden';
+            } else {
+                if (menu) menu.classList.add('translate-x-full');
+                if (bar1) bar1.classList.remove('rotate-45', 'translate-y-1.5');
+                if (bar2) bar2.classList.remove('opacity-0');
+                if (bar3) bar3.classList.remove('-rotate-45', '-translate-y-1.5');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function filterProducts(category, event) {
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const filterBtns = document.querySelectorAll('.product-filter-btn');
+            filterBtns.forEach(btn => {
+                btn.classList.remove('bg-sammys-charcoal', 'text-sammys-ivory');
+                btn.classList.add('text-sammys-charcoal');
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('bg-sammys-charcoal', 'text-sammys-ivory');
+            }
+        }
+
+        function selectMaterialSwatch(finishName) {
+            const finishSelect = document.getElementById('cfg-finish');
+            if (finishSelect) {
+                finishSelect.value = finishName;
+            }
+            showToast(`Selected Material Swatch: ${finishName}`);
+        }
+
+        const modalData = {
+            kitchens: {
+                title: "Architectural Kitchen Suite",
+                category: "Kitchen Joinery",
+                desc: "Integrated marble waterfalls, pocket-door breakfast pantries, concealed extractor hoods, and precision hardware."
+            },
+            wardrobes: {
+                title: "Master Dressing Room Suite",
+                category: "Custom Wardrobes",
+                desc: "Bronze framed glass doors, warm 2700K integrated LED channels, suede drawer liners, and watch winders."
+            },
+            vanities: {
+                title: "Floating Fluted Vanity",
+                category: "Bathroom Joinery",
+                desc: "Water-sealed teak framework, integrated carved stone basins, and hidden soft-close drawers."
+            },
+            wallpanels: {
+                title: "Acoustic Timber Cladding",
+                category: "Architectural Wall Panels",
+                desc: "Full-height walnut batten wall panels engineered with hidden flush pivot doors and ambient backlighting."
+            },
+            wine: {
+                title: "Sommelier Climate Cellar",
+                category: "Specialty Joinery",
+                desc: "Double-glazed UV glass, custom brass bottle rods, microclimate temperature sealing, and sommelier tasting desk."
+            }
+        };
+
+        function openProductModal(key) {
+            const modal = document.getElementById('product-modal');
+            const data = modalData[key] || modalData.kitchens;
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-category').textContent = data.category;
+            document.getElementById('modal-desc').textContent = data.desc;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function handleFormSubmit(e, message) {
+            e.preventDefault();
+            showToast(message);
+            e.target.reset();
+        }
+
+        function handleConfiguratorSubmit(e) {
+            e.preventDefault();
+            const space = document.getElementById('cfg-space').value;
+            showToast(`Brief for ${space} generated & dispatched`);
+            e.target.reset();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            if (toast && toastMsg) {
+                toastMsg.textContent = msg;
+                toast.classList.remove('translate-y-24', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-24', 'opacity-0');
+                }, 3500);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['home', 'products', 'portfolio', 'haute-customize', 'customize', 'business', 'news', 'about', 'contact', 'video-showcase'].includes(hash)) {
+                navigateTo(hash);
+            } else {
+                navigateTo('home');
+            }
+        });
+    </script>
+</body>
+</html>
